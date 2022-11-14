@@ -1,0 +1,73 @@
+{
+  "active": false,
+  "connections": {
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "Execute Todoist->Notion",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2022-11-14T05:19:46.879Z",
+  "hash": "6cb1c5abde698d4ab4f8689cd344a95e",
+  "id": 9,
+  "name": "Sync Notion-Todoist",
+  "nodes": [
+    {
+      "parameters": {
+        "workflowId": "5"
+      },
+      "id": "3899f86c-91e8-46ca-9da2-29395248575a",
+      "name": "Execute Todoist->Notion",
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1,
+      "position": [
+        440,
+        200
+      ]
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "hours",
+              "hoursInterval": 2
+            }
+          ]
+        }
+      },
+      "id": "dccfb647-249c-4425-9af7-6fa16fb8aa77",
+      "name": "Schedule Trigger",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1,
+      "position": [
+        120,
+        200
+      ]
+    },
+    {
+      "parameters": {
+        "workflowId": "0"
+      },
+      "id": "cb039495-a1fc-4410-acfb-46a3e4492723",
+      "name": "Notion>Todoist",
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1,
+      "position": [
+        440,
+        380
+      ]
+    }
+  ],
+  "pinData": {},
+  "settings": {},
+  "staticData": null,
+  "tags": [],
+  "updatedAt": "2022-11-14T15:20:42.233Z"
+}
