@@ -165,7 +165,7 @@
     }
   },
   "createdAt": "2022-11-14T05:15:25.531Z",
-  "hash": "a6fd1d893e92092954c0e8f6a1df155a",
+  "hash": "16cb58a42ffa4f5bf669741f00bf714b",
   "id": 8,
   "name": "GithubBackup",
   "nodes": [
@@ -355,8 +355,7 @@
         "triggerTimes": {
           "item": [
             {
-              "mode": "everyX",
-              "value": 12
+              "hour": 12
             }
           ]
         }
@@ -418,5 +417,5 @@
   "settings": {},
   "staticData": null,
   "tags": [],
-  "updatedAt": "2022-11-14T15:21:54.651Z"
+  "updatedAt": "2022-11-14T15:22:31.658Z"
 }
