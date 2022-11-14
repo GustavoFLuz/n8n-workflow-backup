@@ -45,17 +45,6 @@
         ]
       ]
     },
-    "Start": {
-      "main": [
-        [
-          {
-            "node": "Globals",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
     "GitHub": {
       "main": [
         [
@@ -173,24 +162,24 @@
           }
         ]
       ]
+    },
+    "When Called By Another Workflow": {
+      "main": [
+        [
+          {
+            "node": "Globals",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     }
   },
   "createdAt": "2022-11-14T05:15:25.531Z",
-  "hash": "5cb0626d579dc9670f589dbfc1db42a5",
+  "hash": "d9e43e9845e345544f5cf48e9f829cc3",
   "id": 8,
   "name": "Backup",
   "nodes": [
-    {
-      "parameters": {},
-      "id": "af28f832-7867-4959-82d8-45e9790cfe10",
-      "name": "Start",
-      "type": "n8n-nodes-base.start",
-      "position": [
-        835,
-        335
-      ],
-      "typeVersion": 1
-    },
     {
       "parameters": {
         "resource": "file",
@@ -434,11 +423,22 @@
         440
       ],
       "typeVersion": 2
+    },
+    {
+      "parameters": {},
+      "id": "c7262d9d-c5fc-4381-afb2-a36fff6d2679",
+      "name": "When Called By Another Workflow",
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "typeVersion": 1,
+      "position": [
+        840,
+        340
+      ]
     }
   ],
   "pinData": {},
   "settings": {},
   "staticData": null,
   "tags": [],
-  "updatedAt": "2022-11-14T05:19:25.545Z"
+  "updatedAt": "2022-11-14T05:29:54.703Z"
 }
