@@ -1,0 +1,116 @@
+{
+  "active": false,
+  "connections": {
+    "n8n": {
+      "main": [
+        [
+          {
+            "node": "Set",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Set": {
+      "main": [
+        [
+          {
+            "node": "Execute Workflow",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "On clicking 'execute'": {
+      "main": [
+        [
+          {
+            "node": "n8n",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2022-11-14T05:19:46.879Z",
+  "hash": "ba5d19719871e767f18ef8fd0ba439b8",
+  "id": 9,
+  "name": "Execute All",
+  "nodes": [
+    {
+      "parameters": {},
+      "id": "a53699ca-d596-425c-af3b-c03a2f934b4b",
+      "name": "On clicking 'execute'",
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        240,
+        260
+      ]
+    },
+    {
+      "parameters": {
+        "workflowId": "={{ $json[\"ID\"] }}"
+      },
+      "id": "3899f86c-91e8-46ca-9da2-29395248575a",
+      "name": "Execute Workflow",
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1,
+      "position": [
+        740,
+        260
+      ]
+    },
+    {
+      "parameters": {
+        "filters": {
+          "activeWorkflows": true
+        }
+      },
+      "id": "3cb70d80-fc9b-4126-82a2-7c2833d2e90a",
+      "name": "n8n",
+      "type": "n8n-nodes-base.n8n",
+      "typeVersion": 1,
+      "position": [
+        400,
+        260
+      ],
+      "credentials": {
+        "n8nApi": {
+          "id": "10",
+          "name": "n8n account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "keepOnlySet": true,
+        "values": {
+          "number": [
+            {
+              "name": "ID",
+              "value": "={{ $json[\"id\"] }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "c6d5ba33-dd53-4dd8-9dc4-b2159e663ca7",
+      "name": "Set",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 1,
+      "position": [
+        580,
+        260
+      ]
+    }
+  ],
+  "pinData": {},
+  "settings": {},
+  "staticData": null,
+  "tags": [],
+  "updatedAt": "2022-11-14T05:25:51.727Z"
+}
