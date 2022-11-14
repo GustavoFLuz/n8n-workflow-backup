@@ -1,0 +1,342 @@
+{
+  "active": true,
+  "connections": {
+    "GetSubreddits": {
+      "main": [
+        [
+          {
+            "node": "FormatSubreddits",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "GetNewsDatabase": {
+      "main": [
+        [
+          {
+            "node": "ClearNotionNews",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "FormatSubreddits": {
+      "main": [
+        [
+          {
+            "node": "Await",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "ClearNotionNews": {
+      "main": [
+        [
+          {
+            "node": "Await",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Await": {
+      "main": [
+        [
+          {
+            "node": "Reddit",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Reddit": {
+      "main": [
+        [
+          {
+            "node": "SetNews",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "SetNews": {
+      "main": [
+        [
+          {
+            "node": "LastUpdated",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "GetSubreddits",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "GetNewsDatabase",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2022-11-14T04:54:40.009Z",
+  "hash": "108116bd416bd7115ad160398bceadb4",
+  "id": 6,
+  "name": "RedditNews",
+  "nodes": [
+    {
+      "parameters": {
+        "resource": "databasePage",
+        "operation": "getAll",
+        "databaseId": "7c721b33-9633-43fd-954b-f5336e31a26c",
+        "returnAll": true,
+        "options": {}
+      },
+      "id": "c830f0ef-dcc3-4133-b5b9-5e545eae1066",
+      "name": "GetSubreddits",
+      "type": "n8n-nodes-base.notion",
+      "typeVersion": 2,
+      "position": [
+        880,
+        380
+      ],
+      "credentials": {
+        "notionApi": {
+          "id": "5",
+          "name": "Notion account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "keepOnlySet": true,
+        "values": {
+          "string": [
+            {
+              "name": "Name",
+              "value": "={{ $json[\"property_name\"] }}"
+            },
+            {
+              "name": "Subreddit",
+              "value": "={{ $json[\"property_subreddit\"] }}"
+            }
+          ],
+          "number": [
+            {
+              "name": "Amount",
+              "value": "={{ $json[\"property_amount\"] }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "87ec6445-c48d-4278-9351-ddeeefecae7a",
+      "name": "FormatSubreddits",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 1,
+      "position": [
+        1060,
+        380
+      ]
+    },
+    {
+      "parameters": {
+        "resource": "databasePage",
+        "operation": "getAll",
+        "databaseId": "52d3795e-8daa-41a2-a324-dfa120ec99ee",
+        "returnAll": true,
+        "options": {}
+      },
+      "id": "fa283398-b9b5-4249-b77d-5543326a2a50",
+      "name": "GetNewsDatabase",
+      "type": "n8n-nodes-base.notion",
+      "typeVersion": 2,
+      "position": [
+        880,
+        600
+      ],
+      "credentials": {
+        "notionApi": {
+          "id": "5",
+          "name": "Notion account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "archive",
+        "pageId": "={{ $json[\"id\"] }}"
+      },
+      "id": "036faafa-32e8-416c-93d5-fdbe9e8627fb",
+      "name": "ClearNotionNews",
+      "type": "n8n-nodes-base.notion",
+      "typeVersion": 2,
+      "position": [
+        1060,
+        600
+      ],
+      "credentials": {
+        "notionApi": {
+          "id": "5",
+          "name": "Notion account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "getAll",
+        "subreddit": "={{ $json[\"Subreddit\"] }}",
+        "limit": "={{ $json[\"Amount\"] }}",
+        "filters": {
+          "category": "new"
+        }
+      },
+      "id": "d75caf33-bcdd-4a1b-9be7-af23fc9b84fe",
+      "name": "Reddit",
+      "type": "n8n-nodes-base.reddit",
+      "typeVersion": 1,
+      "position": [
+        1420,
+        400
+      ],
+      "executeOnce": false,
+      "credentials": {
+        "redditOAuth2Api": {
+          "id": "8",
+          "name": "Reddit account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "mode": "chooseBranch"
+      },
+      "id": "947aa9c5-c201-4b25-8bbc-1df38d508973",
+      "name": "Await",
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 2,
+      "position": [
+        1260,
+        400
+      ]
+    },
+    {
+      "parameters": {
+        "resource": "databasePage",
+        "databaseId": "52d3795e-8daa-41a2-a324-dfa120ec99ee",
+        "title": "={{ $json[\"title\"] }}",
+        "propertiesUi": {
+          "propertyValues": [
+            {
+              "key": "Tags|multi_select",
+              "multiSelectValue": "={{ $json[\"subreddit_name_prefixed\"] }}"
+            },
+            {
+              "key": "Upvotes|number",
+              "numberValue": "={{ $json[\"ups\"] }}"
+            },
+            {
+              "key": "RedditURL|url",
+              "urlValue": "=https://www.reddit.com{{ $json[\"permalink\"] }}"
+            },
+            {
+              "key": "URL|url",
+              "urlValue": "={{ $json[\"url\"] }}"
+            }
+          ]
+        },
+        "blockUi": {
+          "blockValues": [
+            {
+              "textContent": "={{ $json[\"selftext\"] }}"
+            }
+          ]
+        }
+      },
+      "id": "9eb22d93-f379-4428-ba66-acdc99d98d6a",
+      "name": "SetNews",
+      "type": "n8n-nodes-base.notion",
+      "typeVersion": 2,
+      "position": [
+        1620,
+        400
+      ],
+      "credentials": {
+        "notionApi": {
+          "id": "5",
+          "name": "Notion account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "triggerAtHour": 12
+            }
+          ]
+        }
+      },
+      "id": "b6097cec-cf22-4b1b-af1f-ebcdc12144ce",
+      "name": "Schedule Trigger",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1,
+      "position": [
+        680,
+        380
+      ]
+    },
+    {
+      "parameters": {
+        "resource": "databasePage",
+        "operation": "update",
+        "pageId": "https://www.notion.so/News-583e7bc0048d4619a83198a2e4c873a5",
+        "propertiesUi": {
+          "propertyValues": [
+            {
+              "key": "LastUpdated|date",
+              "date": "={{$now}}"
+            }
+          ]
+        }
+      },
+      "id": "ebe0eb23-c9bd-4930-b713-5d09bc7eb752",
+      "name": "LastUpdated",
+      "type": "n8n-nodes-base.notion",
+      "typeVersion": 2,
+      "position": [
+        1840,
+        400
+      ],
+      "executeOnce": true,
+      "credentials": {
+        "notionApi": {
+          "id": "5",
+          "name": "Notion account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "settings": {},
+  "staticData": null,
+  "tags": [],
+  "updatedAt": "2022-11-14T17:02:33.230Z"
+}
