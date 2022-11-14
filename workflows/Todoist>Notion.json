@@ -152,10 +152,31 @@
           }
         ]
       ]
+    },
+    "When Called By Another Workflow": {
+      "main": [
+        [
+          {
+            "node": "TodoistLabels",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "GetTodoist",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "GetNotion",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     }
   },
   "createdAt": "2022-11-11T20:49:15.063Z",
-  "hash": "c09676c97a7c40156ebeb9db3defd1a6",
+  "hash": "48ffccbb9410d136896ab677d60aaac5",
   "id": 5,
   "name": "Todoist>Notion",
   "nodes": [
@@ -492,11 +513,22 @@
         380,
         20
       ]
+    },
+    {
+      "parameters": {},
+      "id": "3440c9c0-d436-4b08-89b6-c02078c3a480",
+      "name": "When Called By Another Workflow",
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "typeVersion": 1,
+      "position": [
+        380,
+        360
+      ]
     }
   ],
   "pinData": {},
   "settings": {},
   "staticData": null,
   "tags": [],
-  "updatedAt": "2022-11-14T04:34:03.294Z"
+  "updatedAt": "2022-11-14T05:30:45.987Z"
 }
