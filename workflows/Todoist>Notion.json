@@ -1,0 +1,502 @@
+{
+  "active": true,
+  "connections": {
+    "GetNotion": {
+      "main": [
+        [
+          {
+            "node": "NotionData",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "TodoistData": {
+      "main": [
+        [
+          {
+            "node": "MergeLabels",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "FilterNewTodoist": {
+      "main": [
+        [
+          {
+            "node": "CreateNew",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "GetTodoist": {
+      "main": [
+        [
+          {
+            "node": "TodoistData",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "UpdateTodoist": {
+      "main": [
+        [
+          {
+            "node": "Update",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "TodoistLabels": {
+      "main": [
+        [
+          {
+            "node": "LabelsData",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "CheckNotFound": {
+      "main": [
+        [
+          {
+            "node": "Check",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "NotionData": {
+      "main": [
+        [
+          {
+            "node": "MergeNotionTodoist",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "LabelsData": {
+      "main": [
+        [
+          {
+            "node": "MergeLabels",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "MergeNotionTodoist": {
+      "main": [
+        [
+          {
+            "node": "FilterNewTodoist",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "UpdateTodoist",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "CheckNotFound",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "MergeLabels": {
+      "main": [
+        [
+          {
+            "node": "MergeNotionTodoist",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "GetTodoist",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "GetNotion",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "TodoistLabels",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2022-11-11T20:49:15.063Z",
+  "hash": "c09676c97a7c40156ebeb9db3defd1a6",
+  "id": 5,
+  "name": "Todoist>Notion",
+  "nodes": [
+    {
+      "parameters": {
+        "resource": "databasePage",
+        "operation": "getAll",
+        "databaseId": "5f9a6e6f-cc06-43fc-bd46-bd79918e8197",
+        "returnAll": true,
+        "options": {}
+      },
+      "id": "3d093af7-9727-4362-a035-03fd72ba5f12",
+      "name": "GetNotion",
+      "type": "n8n-nodes-base.notion",
+      "typeVersion": 2,
+      "position": [
+        620,
+        20
+      ],
+      "alwaysOutputData": true,
+      "credentials": {
+        "notionApi": {
+          "id": "5",
+          "name": "Notion account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "console.log($input.all().length)\nif($input.all().length)\nreturn $input.all().map(element=>{\n  el = element.json\n  return {\n    notionID: el?.id,\n    notionName:el?.name,\n    notionPropID:el?.property_id,\n    notionDate:el?.property_date?.start,\n    notionProject:el?.property_project,\n    notionTag:el?.property_tag_link?.at(0),\n    notionCompleted:el?.property_completed\n  }\n}).filter(el=>!el.notionCompleted)\nelse return {\n    notionID:1,\n    notionName:'',\n    notionPropID:1,\n    notionDate:'',\n    notionProject:'',\n    notionTag:''\n}"
+      },
+      "id": "542a07a7-0509-4de1-8bbe-df734c121569",
+      "name": "NotionData",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 1,
+      "position": [
+        800,
+        20
+      ],
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "jsCode": "projectIds ={\n  2302058573: \"Sem Projeto\",\n  2302180171: \"Dev\"\n}\nreturn $input.all().map(element=>{\n  el = element.json\n  labelId = el.label_ids&&el.label_ids.length?el.label_ids.at(0):0\n  date = el.due?el.due.date:''\n  return {\n    todoistID:el.id,\n    todoistProject:projectIds[el.project_id],\n    todoistName:el.content,\n    todoistLabelID: labelId,\n    todoistDate:date\n  }\n})"
+      },
+      "id": "8000002a-ecf1-4bea-a94c-52a0a68c8785",
+      "name": "TodoistData",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 1,
+      "position": [
+        800,
+        180
+      ]
+    },
+    {
+      "parameters": {
+        "resource": "databasePage",
+        "operation": "getAll",
+        "databaseId": "7491c133-fe70-4a03-93c0-c61a270d5873",
+        "returnAll": true,
+        "options": {}
+      },
+      "id": "9dcfb956-0ea6-4964-aaba-8e2241ab7648",
+      "name": "TodoistLabels",
+      "type": "n8n-nodes-base.notion",
+      "typeVersion": 2,
+      "position": [
+        620,
+        360
+      ],
+      "credentials": {
+        "notionApi": {
+          "id": "5",
+          "name": "Notion account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "return $input.all().filter(element=>{\n  el = element.json\n  return !el.notionID\n})"
+      },
+      "id": "bb3e2793-ac8a-4881-9240-d085ce1d3a26",
+      "name": "FilterNewTodoist",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 1,
+      "position": [
+        1320,
+        380
+      ],
+      "executeOnce": false
+    },
+    {
+      "parameters": {
+        "operation": "getAll",
+        "returnAll": true,
+        "filters": {}
+      },
+      "id": "3b531b82-caa1-4448-93cb-e7bffd1996e2",
+      "name": "GetTodoist",
+      "type": "n8n-nodes-base.todoist",
+      "typeVersion": 1,
+      "position": [
+        620,
+        180
+      ],
+      "credentials": {
+        "todoistApi": {
+          "id": "6",
+          "name": "Todoist account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "return  $input.all().filter(element=>{\n  el = element.json\n  return el.notionID && el.todoistID\n});"
+      },
+      "id": "80c40886-0841-4048-80b3-30a40dfab112",
+      "name": "UpdateTodoist",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 1,
+      "position": [
+        1320,
+        200
+      ],
+      "executeOnce": false
+    },
+    {
+      "parameters": {
+        "resource": "databasePage",
+        "databaseId": "5f9a6e6f-cc06-43fc-bd46-bd79918e8197",
+        "title": "={{ $json[\"todoistName\"] }}",
+        "propertiesUi": {
+          "propertyValues": [
+            {
+              "key": "Date|date",
+              "includeTime": false,
+              "date": "={{ $json[\"todoistDate\"] }}"
+            },
+            {
+              "key": "Project|select",
+              "selectValue": "={{ $json[\"todoistProject\"] }}"
+            },
+            {
+              "key": "=TagLink|relation",
+              "relationValue": [
+                "={{ $json[\"notionLabelID\"] }}"
+              ]
+            },
+            {
+              "key": "=ID|number",
+              "numberValue": "={{ $json[\"todoistID\"] }}"
+            }
+          ]
+        }
+      },
+      "id": "1de14a39-3e46-489f-b18f-454d4ff12028",
+      "name": "CreateNew",
+      "type": "n8n-nodes-base.notion",
+      "typeVersion": 2,
+      "position": [
+        1540,
+        380
+      ],
+      "credentials": {
+        "notionApi": {
+          "id": "5",
+          "name": "Notion account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "databasePage",
+        "operation": "update",
+        "pageId": "={{ $json[\"notionID\"] }}",
+        "propertiesUi": {
+          "propertyValues": [
+            {
+              "key": "Date|date",
+              "includeTime": false,
+              "date": "={{ $json[\"todoistDate\"] }}"
+            },
+            {
+              "key": "Name|title",
+              "title": "={{ $json[\"todoistName\"] }}"
+            },
+            {
+              "key": "Project|select",
+              "selectValue": "={{ $json[\"todoistProject\"] }}"
+            },
+            {
+              "key": "=TagLink|relation",
+              "relationValue": [
+                "={{ $json[\"notionLabelID\"] }}"
+              ]
+            }
+          ]
+        }
+      },
+      "id": "46b4e3c7-af89-4851-8c45-0d07e463b7be",
+      "name": "Update",
+      "type": "n8n-nodes-base.notion",
+      "typeVersion": 2,
+      "position": [
+        1540,
+        200
+      ],
+      "credentials": {
+        "notionApi": {
+          "id": "5",
+          "name": "Notion account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "databasePage",
+        "operation": "update",
+        "pageId": "={{ $json[\"notionID\"] }}",
+        "propertiesUi": {
+          "propertyValues": [
+            {
+              "key": "=Completed|checkbox",
+              "checkboxValue": true
+            }
+          ]
+        }
+      },
+      "id": "d0ef980a-40f8-4568-bc2a-066b5ccc2526",
+      "name": "Check",
+      "type": "n8n-nodes-base.notion",
+      "typeVersion": 2,
+      "position": [
+        1540,
+        0
+      ],
+      "credentials": {
+        "notionApi": {
+          "id": "5",
+          "name": "Notion account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "return $input.all().filter(element=>{\n  el = element.json\n  return el.notionID && !el.todoistID\n});;"
+      },
+      "id": "4cd026e5-2b23-4646-9242-ddc10a4c3b0b",
+      "name": "CheckNotFound",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 1,
+      "position": [
+        1320,
+        0
+      ],
+      "executeOnce": false
+    },
+    {
+      "parameters": {
+        "mode": "combine",
+        "mergeByFields": {
+          "values": [
+            {
+              "field1": "todoistLabelID",
+              "field2": "todoistLabelID"
+            }
+          ]
+        },
+        "joinMode": "enrichInput1",
+        "options": {}
+      },
+      "id": "2b8cf56e-8f36-4a90-80d2-9a20febab649",
+      "name": "MergeLabels",
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 2,
+      "position": [
+        960,
+        340
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "return $input.all().map(element=>{\n  el = element.json\n  return {\n    notionLabelID:el.id,\n    notionLabelName:el.name,\n    todoistLabelID:el.property_id\n  }\n})"
+      },
+      "id": "eed19e7d-f382-4b95-b396-8cd5a0d8cf1e",
+      "name": "LabelsData",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 1,
+      "position": [
+        800,
+        360
+      ]
+    },
+    {
+      "parameters": {
+        "mode": "combine",
+        "mergeByFields": {
+          "values": [
+            {
+              "field1": "notionPropID",
+              "field2": "todoistID"
+            }
+          ]
+        },
+        "joinMode": "keepEverything",
+        "options": {}
+      },
+      "id": "5f7cc0b3-490b-4902-8282-1b07ded6c4c8",
+      "name": "MergeNotionTodoist",
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 2,
+      "position": [
+        1100,
+        40
+      ],
+      "continueOnFail": true
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "hours",
+              "hoursInterval": 2
+            }
+          ]
+        }
+      },
+      "id": "9bc25a88-c8d0-4373-9e15-00faa16c63cd",
+      "name": "Schedule Trigger",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1,
+      "position": [
+        380,
+        20
+      ]
+    }
+  ],
+  "pinData": {},
+  "settings": {},
+  "staticData": null,
+  "tags": [],
+  "updatedAt": "2022-11-14T04:34:03.294Z"
+}
