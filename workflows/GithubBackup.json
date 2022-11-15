@@ -162,21 +162,10 @@
           }
         ]
       ]
-    },
-    "Every 12 hours1": {
-      "main": [
-        [
-          {
-            "node": "Globals",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
     }
   },
   "createdAt": "2022-11-14T05:15:25.531Z",
-  "hash": "ea189db8f59f846f62041483db81cc23",
+  "hash": "4ad0b3a0d0aefa491b8236c1ecb90e36",
   "id": 8,
   "name": "GithubBackup",
   "nodes": [
@@ -423,25 +412,6 @@
         440
       ],
       "typeVersion": 2
-    },
-    {
-      "parameters": {
-        "triggerTimes": {
-          "item": [
-            {
-              "mode": "everyMinute"
-            }
-          ]
-        }
-      },
-      "id": "161c31d3-ac8c-42aa-b257-8cf83e5977e7",
-      "name": "Every 12 hours1",
-      "type": "n8n-nodes-base.cron",
-      "position": [
-        840,
-        660
-      ],
-      "typeVersion": 1
     }
   ],
   "pinData": {},
@@ -454,5 +424,5 @@
   },
   "staticData": null,
   "tags": [],
-  "updatedAt": "2022-11-15T16:31:05.000Z"
+  "updatedAt": "2022-11-15T16:32:13.708Z"
 }
