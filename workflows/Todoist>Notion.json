@@ -155,7 +155,7 @@
     }
   },
   "createdAt": "2022-11-11T20:49:15.063Z",
-  "hash": "c09676c97a7c40156ebeb9db3defd1a6",
+  "hash": "2c21e2af00fe143acab8078b7b865de5",
   "id": 5,
   "name": "Todoist>Notion",
   "nodes": [
@@ -495,8 +495,14 @@
     }
   ],
   "pinData": {},
-  "settings": {},
+  "settings": {
+    "saveDataErrorExecution": "all",
+    "saveDataSuccessExecution": "all",
+    "saveExecutionProgress": true,
+    "saveManualExecutions": true,
+    "callerPolicy": "any"
+  },
   "staticData": null,
   "tags": [],
-  "updatedAt": "2022-11-14T15:21:23.489Z"
+  "updatedAt": "2022-11-15T16:32:32.000Z"
 }
