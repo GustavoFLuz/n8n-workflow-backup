@@ -96,7 +96,7 @@
     }
   },
   "createdAt": "2022-11-14T04:54:40.009Z",
-  "hash": "108116bd416bd7115ad160398bceadb4",
+  "hash": "f76e36022e647e3d4cdfabb4c7157923",
   "id": 6,
   "name": "RedditNews",
   "nodes": [
@@ -335,8 +335,14 @@
     }
   ],
   "pinData": {},
-  "settings": {},
+  "settings": {
+    "saveDataErrorExecution": "all",
+    "saveDataSuccessExecution": "all",
+    "saveExecutionProgress": true,
+    "saveManualExecutions": true,
+    "callerPolicy": "any"
+  },
   "staticData": null,
   "tags": [],
-  "updatedAt": "2022-11-14T17:02:33.230Z"
+  "updatedAt": "2022-11-15T16:32:45.000Z"
 }
