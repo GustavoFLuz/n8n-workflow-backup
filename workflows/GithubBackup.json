@@ -1,5 +1,5 @@
 {
-  "active": true,
+  "active": false,
   "connections": {
     "n8n": {
       "main": [
@@ -164,9 +164,9 @@
       ]
     }
   },
-  "createdAt": "2022-11-14T05:15:25.531Z",
-  "hash": "4ad0b3a0d0aefa491b8236c1ecb90e36",
-  "id": 8,
+  "createdAt": "2022-11-15T16:32:15.718Z",
+  "hash": "b377a6023ca6cec593730ce10b472a08",
+  "id": 10,
   "name": "GithubBackup",
   "nodes": [
     {
@@ -424,5 +424,5 @@
   },
   "staticData": null,
   "tags": [],
-  "updatedAt": "2022-11-15T16:32:13.708Z"
+  "updatedAt": "2022-11-15T16:32:15.718Z"
 }
