@@ -176,7 +176,7 @@
     }
   },
   "createdAt": "2022-11-14T05:15:25.531Z",
-  "hash": "59d68d8846d7a608f7c6172e5416fbf6",
+  "hash": "ea189db8f59f846f62041483db81cc23",
   "id": 8,
   "name": "GithubBackup",
   "nodes": [
@@ -445,8 +445,14 @@
     }
   ],
   "pinData": {},
-  "settings": {},
+  "settings": {
+    "saveDataErrorExecution": "all",
+    "saveDataSuccessExecution": "all",
+    "saveExecutionProgress": true,
+    "saveManualExecutions": true,
+    "callerPolicy": "any"
+  },
   "staticData": null,
   "tags": [],
-  "updatedAt": "2022-11-15T16:28:21.918Z"
+  "updatedAt": "2022-11-15T16:31:05.000Z"
 }
