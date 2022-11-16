@@ -1,5 +1,5 @@
 {
-  "active": false,
+  "active": true,
   "connections": {
     "n8n": {
       "main": [
@@ -152,7 +152,7 @@
         ]
       ]
     },
-    "Every 12 hours": {
+    "Every 6 hours": {
       "main": [
         [
           {
@@ -164,9 +164,9 @@
       ]
     }
   },
-  "createdAt": "2022-11-15T16:32:15.718Z",
-  "hash": "b377a6023ca6cec593730ce10b472a08",
-  "id": 10,
+  "createdAt": "2022-11-14T05:15:25.531Z",
+  "hash": "1ef5035dd282f71b2c36181a2a24d0c0",
+  "id": 8,
   "name": "GithubBackup",
   "nodes": [
     {
@@ -352,26 +352,6 @@
     },
     {
       "parameters": {
-        "triggerTimes": {
-          "item": [
-            {
-              "mode": "everyX",
-              "value": 6
-            }
-          ]
-        }
-      },
-      "id": "9815a578-3e63-4128-bea5-8301745606b7",
-      "name": "Every 12 hours",
-      "type": "n8n-nodes-base.cron",
-      "position": [
-        840,
-        460
-      ],
-      "typeVersion": 1
-    },
-    {
-      "parameters": {
         "filters": {}
       },
       "id": "926f0d45-31e5-4322-a9d8-36b8f8020076",
@@ -412,6 +392,26 @@
         440
       ],
       "typeVersion": 2
+    },
+    {
+      "parameters": {
+        "triggerTimes": {
+          "item": [
+            {
+              "mode": "everyX",
+              "value": 6
+            }
+          ]
+        }
+      },
+      "id": "9815a578-3e63-4128-bea5-8301745606b7",
+      "name": "Every 6 hours",
+      "type": "n8n-nodes-base.cron",
+      "position": [
+        840,
+        460
+      ],
+      "typeVersion": 1
     }
   ],
   "pinData": {},
@@ -424,5 +424,5 @@
   },
   "staticData": null,
   "tags": [],
-  "updatedAt": "2022-11-15T16:32:15.718Z"
+  "updatedAt": "2022-11-16T10:58:15.551Z"
 }
