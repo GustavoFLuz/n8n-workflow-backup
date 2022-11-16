@@ -96,7 +96,7 @@
     }
   },
   "createdAt": "2022-11-14T04:54:40.009Z",
-  "hash": "f76e36022e647e3d4cdfabb4c7157923",
+  "hash": "0fb53d40dee8bb01b1e02295595012cb",
   "id": 6,
   "name": "RedditNews",
   "nodes": [
@@ -204,7 +204,7 @@
         "subreddit": "={{ $json[\"Subreddit\"] }}",
         "limit": "={{ $json[\"Amount\"] }}",
         "filters": {
-          "category": "new"
+          "category": "hot"
         }
       },
       "id": "d75caf33-bcdd-4a1b-9be7-af23fc9b84fe",
@@ -344,5 +344,5 @@
   },
   "staticData": null,
   "tags": [],
-  "updatedAt": "2022-11-15T16:32:45.000Z"
+  "updatedAt": "2022-11-16T00:28:45.496Z"
 }
