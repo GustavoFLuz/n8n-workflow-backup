@@ -1,0 +1,288 @@
+{
+  "name": "Telegram Bot Integration",
+  "nodes": [
+    {
+      "parameters": {
+        "updates": [
+          "message"
+        ],
+        "additionalFields": {}
+      },
+      "id": "a66e6757-0af9-4f23-a7b0-680c645f649b",
+      "name": "Received Msg",
+      "type": "n8n-nodes-base.telegramTrigger",
+      "typeVersion": 1,
+      "position": [
+        480,
+        360
+      ],
+      "webhookId": "c75d48cc-5a92-42be-9070-1b8f436e63ca",
+      "credentials": {
+        "telegramApi": {
+          "id": "1",
+          "name": "Telegram Bot"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "number": [
+            {
+              "value1": "={{ $json[\"message\"][\"from\"][\"id\"] }}",
+              "operation": "equal",
+              "value2": 1059491004
+            }
+          ]
+        }
+      },
+      "id": "f804bb96-1af0-4699-92a8-31bc3da98889",
+      "name": "IF",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [
+        700,
+        360
+      ]
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $node[\"Received Msg\"].json[\"message\"][\"chat\"][\"id\"] }}",
+        "text": "User not Authorized",
+        "additionalFields": {}
+      },
+      "id": "1f21fcb3-92c2-4f68-b5ba-7089b577f03c",
+      "name": "Not Authorized",
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1,
+      "position": [
+        920,
+        440
+      ],
+      "credentials": {
+        "telegramApi": {
+          "id": "1",
+          "name": "Telegram Bot"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "deleteMessage",
+        "chatId": "={{ $node[\"Received Msg\"].json[\"message\"][\"chat\"][\"id\"] }}",
+        "messageId": "={{ $node[\"Received Msg\"].json[\"message\"][\"message_id\"] }}"
+      },
+      "id": "59a9ad6a-65a4-4bff-be47-182adc4e2cfb",
+      "name": "Delete Msg",
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1,
+      "position": [
+        700,
+        520
+      ],
+      "credentials": {
+        "telegramApi": {
+          "id": "1",
+          "name": "Telegram Bot"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "mode": "expression",
+        "output": "={{ $json[\"path\"] }}"
+      },
+      "id": "45065f47-4d3a-4e4c-aa83-50ec0f0bf5a4",
+      "name": "Switch",
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 1,
+      "position": [
+        1120,
+        280
+      ]
+    },
+    {
+      "parameters": {
+        "mode": "runOnceForEachItem",
+        "jsCode": "const item = $input.item.json\nconst msg = item.message.text\nconst date = item.message.date;\n\nconst paths = [\".\", \",\", \"g\"]\nconst path = paths.indexOf(msg[0])\n$input.item.json.path = path!=-1?path:3;\nreturn $input.item;"
+      },
+      "id": "3cab2161-1c35-402f-99fd-c252aa2ec467",
+      "name": "Get path",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 1,
+      "position": [
+        920,
+        280
+      ]
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $node[\"Received Msg\"].json[\"message\"][\"chat\"][\"id\"] }}",
+        "text": "Invalid Command",
+        "additionalFields": {}
+      },
+      "id": "f3d55499-b322-4281-a3aa-9321242e0000",
+      "name": "Invalid",
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1,
+      "position": [
+        1280,
+        520
+      ],
+      "credentials": {
+        "telegramApi": {
+          "id": "1",
+          "name": "Telegram Bot"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "workflowId": "2"
+      },
+      "id": "2b0ab002-9d2b-43d8-87b1-8d1acbee0d5d",
+      "name": "Get Classes",
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1,
+      "position": [
+        1300,
+        160
+      ],
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $node[\"Received Msg\"].json[\"message\"][\"chat\"][\"id\"] }}",
+        "text": "={{ $json[\"msg\"] }}",
+        "additionalFields": {
+          "parse_mode": "Markdown"
+        }
+      },
+      "id": "679cfa64-0d01-48d6-9d84-199a19c12a28",
+      "name": "Reply with Classes",
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1,
+      "position": [
+        1660,
+        160
+      ],
+      "credentials": {
+        "telegramApi": {
+          "id": "1",
+          "name": "Telegram Bot"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "if(!Object.keys($input.all()[0].json).length)\n  return {msg: \"No classes found for today\"}\n\nconst text = $input.all().map(item=>{\n  const el = item.json;\n  return `\n${el.name}\n${el.property_name}\n${el.property_time} / ${el.property_place}\n  `\n}).join(\"\")\nreturn {msg: text};"
+      },
+      "id": "a042a14c-4d4a-4d4b-978c-d21f87524605",
+      "name": "Extract Text",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 1,
+      "position": [
+        1480,
+        160
+      ]
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Received Msg": {
+      "main": [
+        [
+          {
+            "node": "IF",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Delete Msg",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "IF": {
+      "main": [
+        [
+          {
+            "node": "Get path",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Not Authorized",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get path": {
+      "main": [
+        [
+          {
+            "node": "Switch",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch": {
+      "main": [
+        [
+          {
+            "node": "Get Classes",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [],
+        [],
+        [
+          {
+            "node": "Invalid",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Classes": {
+      "main": [
+        [
+          {
+            "node": "Extract Text",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extract Text": {
+      "main": [
+        [
+          {
+            "node": "Reply with Classes",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {},
+  "versionId": "2af0f22b-b7cd-4058-a567-ba66e7713dc2",
+  "id": 1,
+  "meta": {
+    "instanceId": "0cdb25f4097a16e73017e089e9c6b2b566741490b531a2dde894eab77bf79066"
+  },
+  "tags": []
+}
