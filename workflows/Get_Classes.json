@@ -1,0 +1,176 @@
+{
+  "name": "Get Classes",
+  "nodes": [
+    {
+      "parameters": {},
+      "id": "9e068c5a-4a15-4e55-aa2a-1eb3d3b6a805",
+      "name": "Execute Workflow Trigger",
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "typeVersion": 1,
+      "position": [
+        580,
+        360
+      ]
+    },
+    {
+      "parameters": {
+        "resource": "databasePage",
+        "operation": "getAll",
+        "databaseId": {
+          "__rl": true,
+          "value": "3e5c7e92-7a30-4c58-bcbc-a52966afa98e",
+          "mode": "list",
+          "cachedResultName": "Classes",
+          "cachedResultUrl": "https://www.notion.so/3e5c7e927a304c58bcbca52966afa98e"
+        },
+        "returnAll": true,
+        "options": {}
+      },
+      "id": "b1b07c90-7764-4878-a45d-ad760efb711d",
+      "name": "Notion (Beta)",
+      "type": "n8n-nodes-base.notion",
+      "typeVersion": 2,
+      "position": [
+        800,
+        360
+      ],
+      "credentials": {
+        "notionApi": {
+          "id": "3",
+          "name": "Notion"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "boolean": [
+            {
+              "value1": "={{ $json[\"property_recuring\"] }}",
+              "value2": true
+            }
+          ]
+        }
+      },
+      "id": "702dcf09-6e9f-4868-b552-24e3f152ad5f",
+      "name": "Split Recurring",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [
+        1020,
+        360
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const today = `${new Date().getFullYear()}-${(new Date().getMonth()+1).toString().padStart(2, \"0\")}-${new Date().getDate().toString().padStart(2, \"0\")}`\nconsole.log(today)\nreturn $input.all().filter(item=>item.json.property_date.start == today);"
+      },
+      "id": "d7791998-d591-4aa3-8431-d44ae1966640",
+      "name": "Filter by Date",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 1,
+      "position": [
+        1280,
+        460
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "return $input.all().filter(item=>item.json.property_week_day == new Date().getDay());"
+      },
+      "id": "bdfef619-bdfd-4f6d-85d5-89ef0676d1a1",
+      "name": "Filter by Day",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 1,
+      "position": [
+        1280,
+        300
+      ]
+    },
+    {
+      "parameters": {},
+      "id": "86e41797-e718-49af-96e9-0f8ef18750f0",
+      "name": "Merge",
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 2,
+      "position": [
+        1500,
+        380
+      ],
+      "alwaysOutputData": true
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Execute Workflow Trigger": {
+      "main": [
+        [
+          {
+            "node": "Notion (Beta)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Notion (Beta)": {
+      "main": [
+        [
+          {
+            "node": "Split Recurring",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Split Recurring": {
+      "main": [
+        [
+          {
+            "node": "Filter by Day",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Filter by Date",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Filter by Date": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Filter by Day": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {},
+  "versionId": "0fa4712d-e752-405f-87f1-40adb203f5b5",
+  "id": 2,
+  "meta": {
+    "instanceId": "0cdb25f4097a16e73017e089e9c6b2b566741490b531a2dde894eab77bf79066"
+  },
+  "tags": []
+}
