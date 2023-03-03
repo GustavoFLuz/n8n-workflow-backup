@@ -1,0 +1,79 @@
+{
+  "name": "Create Log",
+  "nodes": [
+    {
+      "parameters": {},
+      "id": "2b1f3a94-0c35-4c84-80b8-c663e3c9d466",
+      "name": "Run",
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "typeVersion": 1,
+      "position": [
+        1120,
+        400
+      ]
+    },
+    {
+      "parameters": {
+        "authentication": "nocoDbApiToken",
+        "operation": "create",
+        "projectId": "p_xf8rpkyhqe1qab",
+        "table": "md_6hjinba598ug4q",
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldName": "Title",
+              "fieldValue": "={{ $json.message }}"
+            },
+            {
+              "fieldName": "Code",
+              "fieldValue": "={{ $json.code }}"
+            }
+          ]
+        }
+      },
+      "id": "8f797f5b-745e-4b9f-98a9-22d991f6b953",
+      "name": "Create Log",
+      "type": "n8n-nodes-base.nocoDb",
+      "typeVersion": 2,
+      "position": [
+        1360,
+        400
+      ],
+      "credentials": {
+        "nocoDbApiToken": {
+          "id": "1",
+          "name": "NocoDB"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Run": {
+      "main": [
+        [
+          {
+            "node": "Create Log",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {},
+  "versionId": "516bb2cc-32a6-4a04-b110-63838aed710e",
+  "id": "1",
+  "meta": {
+    "instanceId": "b8d9f61a0e5fd5f783556b4f4e562f7c3d8f3827fc379eef8af100c1ba2d54fc"
+  },
+  "tags": [
+    {
+      "createdAt": "2023-03-01T21:51:25.269Z",
+      "updatedAt": "2023-03-01T21:51:25.269Z",
+      "id": "1",
+      "name": "Log"
+    }
+  ]
+}

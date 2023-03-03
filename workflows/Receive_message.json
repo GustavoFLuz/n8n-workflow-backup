@@ -1,0 +1,397 @@
+{
+  "name": "Receive message",
+  "nodes": [
+    {
+      "parameters": {
+        "updates": [
+          "message"
+        ],
+        "additionalFields": {}
+      },
+      "id": "9e5cbeee-252f-481a-8919-f15ba20dbb57",
+      "name": "Receive Message",
+      "type": "n8n-nodes-base.telegramTrigger",
+      "typeVersion": 1,
+      "position": [
+        440,
+        200
+      ],
+      "webhookId": "fe509b9e-da8b-49de-85e5-70c2b2cfa3b1",
+      "credentials": {
+        "telegramApi": {
+          "id": "2",
+          "name": "Telegram bot"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "workflowId": "4"
+      },
+      "name": "GetSettings",
+      "type": "n8n-nodes-base.executeWorkflow",
+      "position": [
+        600,
+        200
+      ],
+      "typeVersion": 1,
+      "id": "5914be52-fe6f-49a9-a851-0c7ee650d93a"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "number": [
+            {
+              "value1": "={{ $node[\"Receive Message\"].json.message.chat.id }}",
+              "operation": "equal",
+              "value2": "={{ $json.CHAT_ID }}"
+            }
+          ]
+        }
+      },
+      "id": "e50da3a9-2e1e-4d06-ae16-f1ad94bc22ca",
+      "name": "Auth",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [
+        760,
+        200
+      ]
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $node[\"Receive Message\"].json.message.chat.id }}",
+        "text": "=Invalid user: {{ $node[\"Receive Message\"].json.message.chat.username }}",
+        "additionalFields": {}
+      },
+      "id": "3953ffb7-8384-42ce-8984-4ce6c396d097",
+      "name": "Invalid User",
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1,
+      "position": [
+        900,
+        480
+      ],
+      "credentials": {
+        "telegramApi": {
+          "id": "2",
+          "name": "Telegram bot"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "keepOnlySet": true,
+        "values": {
+          "string": [
+            {
+              "name": "message",
+              "value": "=Invalid User Access: {{ $json.result.chat.username }} {{ new Date($json.result.date*1000).toString().split(\"GMT\")[0]}}"
+            }
+          ],
+          "number": [
+            {
+              "name": "code",
+              "value": 400
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "d30ceb2b-392e-4289-b655-26dbb32df14b",
+      "name": "Set",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 1,
+      "position": [
+        1100,
+        480
+      ]
+    },
+    {
+      "parameters": {
+        "workflowId": "1"
+      },
+      "name": "Log",
+      "type": "n8n-nodes-base.executeWorkflow",
+      "position": [
+        1280,
+        480
+      ],
+      "typeVersion": 1,
+      "id": "b346be84-d022-4a3e-82c5-c1b463b9f59e"
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $node[\"GetSettings\"].json[\"CHAT_ID\"] }}",
+        "text": "=<b> Code {{$json.code}}: {{ $json.message }} </b>",
+        "additionalFields": {
+          "parse_mode": "HTML"
+        }
+      },
+      "id": "9a14f2a6-7ef1-455b-9367-00d022422108",
+      "name": "Notify",
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1,
+      "position": [
+        1280,
+        640
+      ],
+      "credentials": {
+        "telegramApi": {
+          "id": "2",
+          "name": "Telegram bot"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const code = $('Receive Message').first().json.message.text[0]\nconst opts = $('Auth').first().json.WORKFLOW_OPTIONS\n$('Receive Message').first().json.chat_id = $('GetSettings').first().json.CHAT_ID\n$('Receive Message').first().json.direction_id = opts[code] || -1\nreturn $('Receive Message').first();"
+      },
+      "id": "8a762352-6d31-4fa2-ad1b-5d62865e58cd",
+      "name": "Get Code",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 1,
+      "position": [
+        940,
+        180
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "number": [
+            {
+              "value1": "={{ $json.direction_id }}",
+              "operation": "notEqual",
+              "value2": -1
+            }
+          ]
+        }
+      },
+      "id": "6ffb2fd5-b86a-4fdf-bdd4-03e6a7c7c8df",
+      "name": "IF",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [
+        1100,
+        180
+      ]
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $node[\"GetSettings\"].json[\"CHAT_ID\"] }}",
+        "text": "Código inválido",
+        "additionalFields": {}
+      },
+      "id": "7abcbe46-6808-4995-8cc7-47ee160a83d1",
+      "name": "Código Inválido",
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1,
+      "position": [
+        1280,
+        320
+      ],
+      "credentials": {
+        "telegramApi": {
+          "id": "2",
+          "name": "Telegram bot"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "workflowId": "1"
+      },
+      "name": "Log1",
+      "type": "n8n-nodes-base.executeWorkflow",
+      "position": [
+        1620,
+        320
+      ],
+      "typeVersion": 1,
+      "id": "b28b1080-c11c-4555-99c1-ac60573a5de4"
+    },
+    {
+      "parameters": {
+        "keepOnlySet": true,
+        "values": {
+          "string": [
+            {
+              "name": "message",
+              "value": "=Código inválido:  {{ $json.result.text }}"
+            }
+          ],
+          "number": [
+            {
+              "name": "code",
+              "value": 404
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "6065cca4-1a6a-4e2e-9605-a9e52cbc4c47",
+      "name": "Set1",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 1,
+      "position": [
+        1440,
+        320
+      ]
+    },
+    {
+      "parameters": {
+        "workflowId": "={{ $json.direction_id }}"
+      },
+      "name": "Run Workflow",
+      "type": "n8n-nodes-base.executeWorkflow",
+      "position": [
+        1280,
+        80
+      ],
+      "typeVersion": 1,
+      "id": "7a42a380-c9d0-497b-a417-b8777df86837"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Receive Message": {
+      "main": [
+        [
+          {
+            "node": "GetSettings",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "GetSettings": {
+      "main": [
+        [
+          {
+            "node": "Auth",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Auth": {
+      "main": [
+        [
+          {
+            "node": "Get Code",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Invalid User",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Invalid User": {
+      "main": [
+        [
+          {
+            "node": "Set",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Set": {
+      "main": [
+        [
+          {
+            "node": "Log",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Notify",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Code": {
+      "main": [
+        [
+          {
+            "node": "IF",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "IF": {
+      "main": [
+        [
+          {
+            "node": "Run Workflow",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Código Inválido",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Código Inválido": {
+      "main": [
+        [
+          {
+            "node": "Set1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Set1": {
+      "main": [
+        [
+          {
+            "node": "Log1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "saveExecutionProgress": "DEFAULT",
+    "saveManualExecutions": false,
+    "callerPolicy": "workflowsFromSameOwner",
+    "timezone": "America/Sao_Paulo"
+  },
+  "versionId": "31c8033a-9931-4643-9531-18a90c70e6fe",
+  "id": "3",
+  "meta": {
+    "instanceId": "b8d9f61a0e5fd5f783556b4f4e562f7c3d8f3827fc379eef8af100c1ba2d54fc"
+  },
+  "tags": [
+    {
+      "createdAt": "2023-03-02T21:29:20.218Z",
+      "updatedAt": "2023-03-02T21:29:20.218Z",
+      "id": "2",
+      "name": "Telegram Bot"
+    }
+  ]
+}

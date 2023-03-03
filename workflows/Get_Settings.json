@@ -1,0 +1,75 @@
+{
+  "name": "Get Settings",
+  "nodes": [
+    {
+      "parameters": {},
+      "id": "0b2aac0e-49a9-4e33-89f7-2c96ac2bce8e",
+      "name": "Get Settings",
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "typeVersion": 1,
+      "position": [
+        1040,
+        400
+      ]
+    },
+    {
+      "parameters": {
+        "fileSelector": "/home/node/.n8n/settings.json"
+      },
+      "id": "f3bb01d7-f73c-414a-bfe0-f67d6dbefc92",
+      "name": "Read Binary Files",
+      "type": "n8n-nodes-base.readBinaryFiles",
+      "typeVersion": 1,
+      "position": [
+        1260,
+        400
+      ]
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "id": "b5fa43ab-e328-403f-a708-6c8165c3800d",
+      "name": "Move Binary Data",
+      "type": "n8n-nodes-base.moveBinaryData",
+      "typeVersion": 1,
+      "position": [
+        1480,
+        400
+      ]
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Get Settings": {
+      "main": [
+        [
+          {
+            "node": "Read Binary Files",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Read Binary Files": {
+      "main": [
+        [
+          {
+            "node": "Move Binary Data",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {},
+  "versionId": "fa5baa4e-0130-4573-ac59-d814e8bdcc56",
+  "id": "4",
+  "meta": {
+    "instanceId": "b8d9f61a0e5fd5f783556b4f4e562f7c3d8f3827fc379eef8af100c1ba2d54fc"
+  },
+  "tags": []
+}
